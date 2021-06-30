@@ -71,7 +71,9 @@ def eigenschappen_vergelijken(stapel):
             sets.append(combinatie[i])
     return sets
 
+
 #dikke yeet 2,0
+
 print(str(eigenschappen_vergelijken(table())))
 # klasse schrijven die vgl van eigenschappen ondersteundt
 # algoritme dat sets kan opsporen
