@@ -71,6 +71,7 @@ def eigenschappen_vergelijken(stapel):
             sets.append(combinatie[i])
     return sets
 
+#dikke yeet 2,0
 
 print(str(eigenschappen_vergelijken(table())))
 # klasse schrijven die vgl van eigenschappen ondersteundt
@@ -81,6 +82,7 @@ print(str(eigenschappen_vergelijken(table())))
 # spel eromheen bouwen
 
 
+##### +++++++++++++++=
 # lossekaart=Set(0,1,2,0)
 # print(lossekaart.return_infolist())
 
