@@ -1,0 +1,130 @@
+[16:35] Aanen, G.S.N. (Geert Simon)
+    
+import random
+import time
+
+
+class Kaart:#één set_kaart (1)
+    def __init__(self, kleur, aantal, symbool, vulling):
+        self.kleur = kleur
+        self.aantal = aantal
+        self.symbool = symbool
+        self.vulling = vulling
+ 
+
+
+    def __str__(self):
+        return str((self.kleur, self.aantal, self.symbool, self.vulling))
+ 
+
+
+    def return_infolist(self):
+        return [int(self.kleur), int(self.aantal), int(self.symbool), int(self.vulling)]
+ 
+#creëert 81 gerandomiseerde kaarten
+def create_deck():
+    kaartenstapel = []
+    for i in range(3):
+        for j in range(3):
+            for k in range(3):
+                for l in range(3):
+                    kaartenstapel.append(Kaart(i,j,k,l))
+    return kaartenstapel
+ 
+
+
+#neemt eerste 12 kaarten van de kaartenstapel
+def table(deck):
+    tafelkaarten = []
+    for i in range(12):
+        tafelkaarten.append(deck.pop())
+    return tafelkaarten
+ 
+ 
+#geeft alle 220 combinaties van 3 die er uit 12 kaarten te halen zijn
+def kaartencombi(tafelkaarten):
+    vergeleken_kaartencombi= []
+    for i in range(12):
+        for j in range(i+1,12):
+            for k in range(j+1,12):
+                vergeleken_kaartencombi.append([i,j,k])
+    return vergeleken_kaartencombi
+ 
+#geeft alle mogelijke sets aan
+def eigenschappen_vergelijken(stapel):
+    sets = []
+    combinatie = kaartencombi(stapel)
+    for i in range(220):
+        counter = 0
+        j = 0
+        while j < 4:
+            if stapel[combinatie[i][0]].return_infolist()[j] == stapel[combinatie[i][1]].return_infolist()[j]:
+                if stapel[combinatie[i][2]].return_infolist()[j] == stapel[combinatie[i][1]].return_infolist()[j]: 
+                    if stapel[combinatie[i][0]].return_infolist()[j] == stapel[combinatie[i][2]].return_infolist()[j]:
+                        counter += 1
+            elif stapel[combinatie[i][0]].return_infolist()[j] != stapel[combinatie[i][1]].return_infolist()[j]:
+                if stapel[combinatie[i][2]].return_infolist()[j] != stapel[combinatie[i][1]].return_infolist()[j]:
+                    if stapel[combinatie[i][0]].return_infolist()[j] != stapel[combinatie[i][2]].return_infolist()[j]:
+                        counter += 1
+            j = j + 1
+        for k in range(3):
+            combinatie[i][k] += 1
+        if counter == 4:
+            sets.append(combinatie[i])
+    return sets
+ 
+ 
+def begin_spel(): #moeilijkheid in kunnen vullen
+    deck = random.sample(create_deck(), len(create_deck()))
+    tafel = table(deck)
+    print('Hallo, hoeveel bedenk tijd tegen de computer wil u?')
+    tijdlimiet = int(input())
+    punten = 0
+    computerpunten = 0
+    capsets=0
+    while computerpunten +punten+capsets < 23:
+        if eigenschappen_vergelijken(tafel)== []:
+            for i in range(3):
+                tafel[i]=deck.pop()
+            capsets+=1
+        print(list(map(lambda x: x.return_infolist(), tafel)))
+        print('U mag drie kaarten invullen waarvan u denkt dat het een set is')
+        begintijd = time.time()
+        x= list(map(int, input().split())) 
+        y1=x[0]
+        y2=x[1]
+        y3=x[2]
+        denktijd = time.time() - begintijd
+ 
+        if x in eigenschappen_vergelijken(tafel) and denktijd <= tijdlimiet:
+            punten += 1
+            tafel[y1-1]=deck.pop()
+            tafel[y2-1]=deck.pop()
+            tafel[y3-1]=deck.pop()
+            print('lekker bezig!')
+           
+        else:
+              print('Helaas, een goeie set was geweest:', eigenschappen_vergelijken(tafel)[0])
+              x1=eigenschappen_vergelijken(tafel)[0][0]
+              x2=eigenschappen_vergelijken(tafel)[0][1]
+              x3=eigenschappen_vergelijken(tafel)[0][2]
+              tafel[x1-1]=deck.pop()
+              tafel[x2-1]=deck.pop()
+              tafel[x3-1]=deck.pop()
+              computerpunten += 1
+
+
+        print(punten, computerpunten)
+    return
+ 
+
+
+begin_spel()
+
+
+
+
+
+
+
+
